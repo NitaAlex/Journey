@@ -1,6 +1,7 @@
 start = 3.45
 km = 1.70
-wait = 37.80waitfee = wait / 60    # divided the fee to be calculated in minutes(bc 1 hr = 60 mins)
+wait = 37.80
+waitfee = wait / 60 # divided the fee to be calculated in minutes(because 1 hr = 60 mins)
 print('Computing Taxi Fares in Coteana')
 kmcustomer = int(input('Kilometers: '))
 timecustomer = int(input('Standing/Waiting time in minutes: '))

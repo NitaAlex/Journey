@@ -1,0 +1,6 @@
+gasprice = 8.2
+print('The price for gas is: $ 8.2')  #this will show the gas price
+consumptioninput = float(input('Please add the fuel consumption: ')) # this will ask the user for the car`s consumption
+kilometers = float(input('Please add the kilometers: ')) # this will ask the user for the kilometers until the destination
+print('The total price will be: ', int(consumptioninput * kilometers / 100 * gasprice), '$')
+print('The gas used will be:', consumptioninput * kilometers / 100, 'liters')

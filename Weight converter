@@ -1,0 +1,9 @@
+weight = float(input("Please insert weight: "))
+measure = str(input("(K)g or (L)bs: "))
+
+if measure == str("l") or measure == str("L"):
+    print("Weight in Kg: ", weight * 0.45)
+elif measure == str("k") or measure == str("K"):
+    print("Weight in Lbs: ", int(weight * 2.20))
+else:
+    print("Retry!")

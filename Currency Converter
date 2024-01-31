@@ -1,5 +1,5 @@
-firstcurrency = input("Please enter the currency: USD, EUR, GBP, RON - ")
-secondcurrency = input("Please enter the sign in which to convert: USD, EUR, GBP, RON - ")
+firstcurrency = input("Please enter the currency: USD, EUR, GBP, RON - ").upper()
+secondcurrency = input("Please enter the sign in which to convert: USD, EUR, GBP, RON - ").upper()
 ammount = float(input("Please enter the ammount to convert: "))
 
 if firstcurrency == str("USD") and secondcurrency == str("EUR"):

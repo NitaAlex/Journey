@@ -1,0 +1,28 @@
+firstcurrency = input("Please enter the currency: USD, EUR, GBP, RON - ")
+secondcurrency = input("Please enter the sign in which to convert: USD, EUR, GBP, RON - ")
+ammount = float(input("Please enter the ammount to convert: "))
+
+if firstcurrency == str("USD") and secondcurrency == str("EUR"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 0.85, secondcurrency)
+elif firstcurrency == str("USD") and secondcurrency == str("GBP"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 0.74, secondcurrency)
+elif firstcurrency == str("USD") and secondcurrency == str("RON"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 4.15, secondcurrency)
+elif firstcurrency == str("EUR") and secondcurrency == str("USD"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 1.18, secondcurrency)
+elif firstcurrency == str("EUR") and secondcurrency == str("GBP"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 0.88, secondcurrency)
+elif firstcurrency == str("EUR") and secondcurrency == str("RON"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 4.89, secondcurrency)
+elif firstcurrency == str("GBP") and secondcurrency == str("USD"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 1.35, secondcurrency)
+elif firstcurrency == str("GBP") and secondcurrency == str("EUR"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 1.14, secondcurrency)
+elif firstcurrency == str("GBP") and secondcurrency == str("RON"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 5.58, secondcurrency)
+elif firstcurrency == str("RON") and secondcurrency == str("USD"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 0.24, secondcurrency)
+elif firstcurrency == str("RON") and secondcurrency == str("EUR"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 0.20, secondcurrency)
+elif firstcurrency == str("RON") and secondcurrency == str("GBP"):
+    print(ammount, firstcurrency, "into", secondcurrency, "is: ", ammount * 0.18, secondcurrency)

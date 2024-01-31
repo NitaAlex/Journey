@@ -1,0 +1,30 @@
+# make sure to install forex-python in order to get real time exchange rates (pip install forex-python)
+# Import currency rates from internet
+
+from forex_python.converter import CurrencyRates
+
+
+# Below we will define the convert_currency function in which we have three parameters: ammount, from_currency, to_currency
+
+def convert_currency(amount, from_currency, to_currency):
+    c = CurrencyRates()
+
+    # Get the exchange rate
+    exchange_rate = c.get_rate(from_currency, to_currency)
+
+    # Calculate the converted amount
+    converted_amount = round(amount * exchange_rate, 2)
+
+    # Print the result
+    print(f"{amount} {from_currency} is equal to {converted_amount} {to_currency}")
+
+# Below we will have the user interact with the program
+
+first_currency = input("Please enter the currency: USD, EUR, GBP, RON - ").upper()
+second_currency = input("Please enter the sign in which to convert: USD, EUR, GBP, RON - ").upper()
+amount = float(input("Please enter the amount to convert: "))
+
+# Printing the results from the inputed values
+
+convert_currency(amount, first_currency, second_currency)
+

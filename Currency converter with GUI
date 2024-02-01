@@ -1,3 +1,5 @@
+# NOTE: In order for this to work on Windows you need to run pip install forex-python and pip install tk from cmd
+
 import tkinter as tk # This library is used for creating graphical user interfaces (GUIs) in Python.
 from forex_python.converter import CurrencyRates # This module is part of the forex-python library, which is used for fetching exchange rates.
 

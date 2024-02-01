@@ -1,8 +1,6 @@
 # make sure to install forex-python in order to get real time exchange rates (pip install forex-python)
-# Import currency rates from internet
 
 from forex_python.converter import CurrencyRates
-
 
 # Below we will define the convert_currency function in which we have three parameters: ammount, from_currency, to_currency
 

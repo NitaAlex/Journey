@@ -1,1 +1,1 @@
-The main goal of this project is for me to get a better grasp on Python and how to use it propperly. As I create more and more apps I will upload them here in order to have a database of my evolution with Python.
+The main goal of this branch is for me to get a better grasp on Python and how to use it propperly. As I create more and more apps I will upload them here in order to have a database of my evolution with the language.

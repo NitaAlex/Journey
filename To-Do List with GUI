@@ -45,13 +45,68 @@ def add_task(): # Gets input values for task name, priority, and due date.
     todo_list.append(new_task)
     save_todo_list(todo_list)
     messagebox.showinfo("Task Added", f"Task '{task_name}' added successfully!")
-    refresh_main()  # Calls the refresh function to update the main window
+    refresh_main()
 
 # View Tasks Function:
 def view_tasks(): # Creates a new window to display tasks.
     def refresh_view(): # Destroy the existing "View Tasks" window and recreate it
         view_window.destroy()
         view_tasks()
+
+    def edit_task(index):
+        edit_window = tk.Toplevel(view_window)
+        edit_window.title("Edit Task")
+        edit_window.geometry("600x300")  # Set the desired size
+
+        # Get the selected task
+        selected_task = todo_list[index]
+
+        # Create and pack entry widgets for editing
+        label_name = tk.Label(edit_window, text="Task Name:")
+        label_name.pack()
+
+        entry_name = tk.Entry(edit_window)
+        entry_name.insert(0, selected_task['name'])
+        entry_name.pack()
+
+        label_priority = tk.Label(edit_window, text="Task Priority (optional):")
+        label_priority.pack()
+
+        entry_priority = tk.Entry(edit_window)
+        entry_priority.insert(0, selected_task['priority'])
+        entry_priority.pack()
+
+        label_due_date = tk.Label(edit_window, text="Due Date (optional):")
+        label_due_date.pack()
+
+        entry_due_date = tk.Entry(edit_window)
+        entry_due_date.insert(0, selected_task['due_date'])
+        entry_due_date.pack()
+
+        # Function to save the edits
+        def save_edits():
+            edited_task = {
+                'name': entry_name.get().strip(),
+                'priority': entry_priority.get().strip(),
+                'due_date': entry_due_date.get().strip(),
+                'completed': selected_task['completed']
+            }
+
+            todo_list[index] = edited_task
+            save_todo_list(todo_list)
+            messagebox.showinfo("Edit Task", "Task edited successfully!")
+            refresh_view()
+            edit_window.destroy()
+
+        # Button to save edits
+        button_save_edits = tk.Button(edit_window, text="Save Edits", command=save_edits)
+        button_save_edits.pack()
+
+# Button for confirming a deletion
+    def delete_confirmation(index): # Display a confirmation pop-up before deleting
+        confirmation = messagebox.askyesno("Confirmation", "Are you sure you want to delete this task?")
+        if confirmation:
+            delete_task(index, refresh_view)
 
     view_window = tk.Toplevel(root)
     view_window.title("View Tasks")
@@ -64,26 +119,28 @@ def view_tasks(): # Creates a new window to display tasks.
         label_task = tk.Label(task_frame, text=f"{task['name']} - Priority: {task['priority']} - Due Date: {task['due_date']}")
         label_task.pack(side=tk.LEFT)
 
-        delete_button = tk.Button(task_frame, text="Delete", command=lambda index=i: delete_task(index, refresh_view))
-        delete_button.pack(side=tk.RIGHT)
-# Delete Task Function:
+        edit_button = tk.Button(task_frame, text="Edit", command=lambda index=i: edit_task(index))
+        edit_button.pack(side=tk.LEFT, padx=5)  # Added padx for horizontal padding so that the "Edit" and "Delete" buttons can be viewed better
+
+        delete_button = tk.Button(task_frame, text="Delete", command=lambda index=i: delete_confirmation(index))
+        delete_button.pack(side=tk.RIGHT, padx=5)  # Added padx for horizontal padding so that the "Edit" and "Delete" buttons can be viewed better
+
+# Function for deleting the task:
 def delete_task(index, refresh_function):
     global todo_list
     del todo_list[index]
     save_todo_list(todo_list)
     messagebox.showinfo("Delete Task", "Task deleted successfully!")
-    refresh_function()  # Call the refresh function to update the "View Tasks" window
+    refresh_function()
 
-# Create Main WIndow Function:
 def create_main_window():
     global root, entry_task_name, entry_task_priority, entry_task_due_date, todo_list
 
     root = tk.Tk()
     root.title("To-Do List")
-    root.geometry("400x300")
+    root.geometry("600x400")
 
     todo_list = load_todo_list()
-    print(f"Loaded to-do list: {todo_list}")
 
     label_task_name = tk.Label(root, text="Task Name:")
     label_task_name.pack(pady=5)
@@ -91,7 +148,7 @@ def create_main_window():
     entry_task_name = tk.Entry(root)
     entry_task_name.pack(pady=5)
 
-    label_task_priority = tk.Label(root, text="Task Priority:")
+    label_task_priority = tk.Label(root, text="Task Priority (optional):")
     label_task_priority.pack(pady=5)
 
     entry_task_priority = tk.Entry(root)
@@ -111,5 +168,4 @@ def create_main_window():
 
     root.mainloop()
 
-# Initial creation of the main window
 create_main_window()

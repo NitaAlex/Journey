@@ -1,0 +1,115 @@
+# Importing Libraries:
+import tkinter as tk # Standart Python interface for the GUI toolkit
+from tkinter import messagebox # Part of 'tkinter', used to create pop-up message boxes.
+import json # Provides methods for working with JSON data
+import os # Provies a way to interact with the operating system, under the file path manipulation
+
+# Loading and Saving Data:
+def load_todo_list(): # Attempts to load the to-do list from a file. If the file is not found, it returns an empty list.
+    try:
+        with open(get_file_path(), 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+def save_todo_list(todo_list): # Saves the to-do list to a file.
+    with open(get_file_path(), 'w') as file:
+        json.dump(todo_list, file)
+
+# File Path Function:
+def get_file_path():
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "todo_list.json")
+
+# Main Window Refresh Function:
+def refresh_main(): # Destroy the existing main window and recreate it
+    root.destroy()
+    create_main_window()
+
+# Add Task Function:
+def add_task(): # Gets input values for task name, priority, and due date.
+    task_name = entry_task_name.get().strip()
+    task_priority = entry_task_priority.get().strip()
+    task_due_date = entry_task_due_date.get().strip()
+
+    if not task_name:
+        messagebox.showerror("Error", "Task Name is required!")
+        return
+
+    new_task = {
+        'name': task_name,
+        'priority': task_priority,
+        'due_date': task_due_date,
+        'completed': False
+    }
+
+    todo_list.append(new_task)
+    save_todo_list(todo_list)
+    messagebox.showinfo("Task Added", f"Task '{task_name}' added successfully!")
+    refresh_main()  # Calls the refresh function to update the main window
+
+# View Tasks Function:
+def view_tasks(): # Creates a new window to display tasks.
+    def refresh_view(): # Destroy the existing "View Tasks" window and recreate it
+        view_window.destroy()
+        view_tasks()
+
+    view_window = tk.Toplevel(root)
+    view_window.title("View Tasks")
+    view_window.geometry("600x400")
+
+    for i, task in enumerate(todo_list):
+        task_frame = tk.Frame(view_window)
+        task_frame.pack(pady=5)
+
+        label_task = tk.Label(task_frame, text=f"{task['name']} - Priority: {task['priority']} - Due Date: {task['due_date']}")
+        label_task.pack(side=tk.LEFT)
+
+        delete_button = tk.Button(task_frame, text="Delete", command=lambda index=i: delete_task(index, refresh_view))
+        delete_button.pack(side=tk.RIGHT)
+# Delete Task Function:
+def delete_task(index, refresh_function):
+    global todo_list
+    del todo_list[index]
+    save_todo_list(todo_list)
+    messagebox.showinfo("Delete Task", "Task deleted successfully!")
+    refresh_function()  # Call the refresh function to update the "View Tasks" window
+
+# Create Main WIndow Function:
+def create_main_window():
+    global root, entry_task_name, entry_task_priority, entry_task_due_date, todo_list
+
+    root = tk.Tk()
+    root.title("To-Do List")
+    root.geometry("400x300")
+
+    todo_list = load_todo_list()
+    print(f"Loaded to-do list: {todo_list}")
+
+    label_task_name = tk.Label(root, text="Task Name:")
+    label_task_name.pack(pady=5)
+
+    entry_task_name = tk.Entry(root)
+    entry_task_name.pack(pady=5)
+
+    label_task_priority = tk.Label(root, text="Task Priority:")
+    label_task_priority.pack(pady=5)
+
+    entry_task_priority = tk.Entry(root)
+    entry_task_priority.pack(pady=5)
+
+    label_task_due_date = tk.Label(root, text="Due Date (optional):")
+    label_task_due_date.pack(pady=5)
+
+    entry_task_due_date = tk.Entry(root)
+    entry_task_due_date.pack(pady=5)
+
+    button_add_task = tk.Button(root, text="Add Task", command=add_task)
+    button_add_task.pack(pady=10)
+
+    button_view_tasks = tk.Button(root, text="View Tasks", command=view_tasks)
+    button_view_tasks.pack(pady=10)
+
+    root.mainloop()
+
+# Initial creation of the main window
+create_main_window()

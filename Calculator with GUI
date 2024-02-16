@@ -1,0 +1,97 @@
+import tkinter as tk
+
+# Function to handle button clicks
+def button_click(symbol):
+    # Get the current content of the entry widget
+    current = entry.get()
+    
+    # Clear the entry widget if 'C' button is clicked
+    if symbol == 'C':
+        entry.delete(0, tk.END)
+    # Evaluate the expression and display the result if '=' button is clicked
+    elif symbol == '=':
+        try:
+            result = eval(current)
+            entry.delete(0, tk.END)
+            entry.insert(tk.END, str(result))
+        # Handle exceptions (e.g., division by zero) and display 'Error'
+        except Exception as e:
+            entry.delete(0, tk.END)
+            entry.insert(tk.END, "Error")
+    # Insert the clicked symbol into the entry widget
+    else:
+        entry.insert(tk.END, symbol)
+
+# Function to handle keyboard input
+def key_pressed(event):
+    # Get the keysym from the event
+    key = event.keysym
+
+    # Prevent the default behavior of the key event
+    event.widget.event_generate('<<KeyPress>>', keysym=event.keysym)
+
+    # Handle key presses
+    if key == 'Return':
+        button_click('=')
+    elif key == 'c' or key == 'C':
+        button_click('C')
+    elif key == '.':
+        button_click('.')
+    elif key.isdigit():
+        button_click(key)
+    elif key == '+':
+        button_click('+')
+    elif key == '-':
+        button_click('-')
+    elif key == '*':
+        button_click('*')
+    elif key == '/':
+        button_click('/')
+    elif key == 'BackSpace':
+        entry.delete(len(entry.get()) - 1, tk.END)
+
+    # Prevent further handling of the key event by tkinter
+    return "break"
+
+# Create the main window
+root = tk.Tk()
+root.title("Simple Calculator")
+
+# Customize the background color of the main window
+root.configure(bg='black')
+
+# Create the entry widget for displaying the expression and result
+entry = tk.Entry(root, width=30, borderwidth=3, bg='white', fg='black', font=('Times New Roman', 14))
+entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+
+# Set focus to the entry widget
+entry.focus()
+
+# Define buttons for the calculator
+buttons = [
+    '7', '8', '9', '/',   # Row 1
+    '4', '5', '6', '*',   # Row 2
+    '1', '2', '3', '-',   # Row 3
+    '0', '.', '=', '+',   # Row 4
+    'C',                  # Row 5 (spanning all columns)
+]
+
+# Add buttons to the GUI
+row = 1
+col = 0
+for button in buttons:
+    # Create buttons with labels from the 'buttons' list
+    button_widget = tk.Button(root, text=button, padx=20, pady=10, bg='black', fg='white', font=('Arial', 14), command=lambda button=button: button_click(button))
+    button_widget.grid(row=row, column=col, sticky="nsew")
+    
+    # Update row and column for the next button
+    col += 1
+    if col > 3:
+        col = 0
+        row += 1
+
+# Bind keyboard events only to the root window
+root.bind('<Key>', key_pressed)
+
+# Start the main event loop
+root.mainloop()

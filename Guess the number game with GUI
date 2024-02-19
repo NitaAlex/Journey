@@ -1,0 +1,70 @@
+import tkinter as tk
+from tkinter import messagebox
+import random
+
+class GuessTheNumberGame:
+    def __init__(self, master):
+        # Initialize the main window
+        self.master = master
+        self.master.title("Guess the Number")
+        self.master.geometry("400x200")  # Set the size of the main window
+        self.master.config(bg="black")   # Set the background color of the main window to black
+        
+        # Generate a random number between 1 and 100
+        self.random_number = random.randint(1, 100)
+        self.attempts = 0  # Initialize the number of attempts
+        self.max_attempts = 10  # Maximum number of attempts allowed
+        
+        # Create and pack the instruction label with larger font size
+        self.label_instruction = tk.Label(master, text="Guess a number between 1 and 100:", font=("Arial", 14), bg="black", fg="white")  # Set the background color to black and text color to white
+        self.label_instruction.pack(pady=10)
+        
+        # Create and pack the entry field for the player's guess
+        self.entry_guess = tk.Entry(master, font=("Arial", 12), bg="white")  # Set the background color to white
+        self.entry_guess.pack(pady=5)
+        
+        # Create and pack the "Guess" button with larger font size
+        self.button_guess = tk.Button(master, text="Guess", command=self.check_guess, font=("Arial", 12), bg="white")  # Set the background color to white
+        self.button_guess.pack(pady=5)
+        
+        # Bind the <Return> key event to the check_guess function
+        self.master.bind("<Return>", self.check_guess)
+        
+    def check_guess(self, event=None):  # Modify the function to accept an event parameter
+        # Increment the number of attempts
+        self.attempts += 1
+        guess = self.entry_guess.get()  # Get the player's guess from the entry field
+        
+        try:
+            guess = int(guess)  # Convert the guess to an integer
+            if guess == self.random_number:
+                # If the guess is correct, display a congratulatory message
+                messagebox.showinfo("Congratulations!", f"Correct! You guessed the number {self.random_number} in {self.attempts} attempts.")
+                self.reset_game()  # Reset the game for a new round
+            elif guess < self.random_number:
+                # If the guess is too low, provide feedback to the player
+                messagebox.showinfo("Too Low", "Try guessing higher.")
+            else:
+                # If the guess is too high, provide feedback to the player
+                messagebox.showinfo("Too High", "Try guessing lower.")
+                
+            if self.attempts >= self.max_attempts:
+                # If the player runs out of attempts, display a message and reset the game
+                messagebox.showinfo("Out of Attempts", f"Sorry, you ran out of attempts. The correct number was {self.random_number}.")
+                self.reset_game()
+        except ValueError:
+            # Handle cases where the input is not a valid number
+            messagebox.showerror("Error", "Please enter a valid number.")
+        
+        self.entry_guess.delete(0, tk.END)  # Clear the entry field
+        
+    def reset_game(self):
+        # Reset the game for a new round
+        self.random_number = random.randint(1, 100)  # Generate a new random number
+        self.attempts = 0  # Reset the number of attempts
+
+if __name__ == "__main__":
+    # Create the main window and initialize the game
+    root = tk.Tk()
+    game = GuessTheNumberGame(root)
+    root.mainloop()

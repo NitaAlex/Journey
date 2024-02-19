@@ -1,4 +1,4 @@
 import random
 
-coin = random.choice(["heads", "tails"])
-print(coin)
+coin = random.choice(["Heads", "Tails"])
+print("The coin landed on", coin)
